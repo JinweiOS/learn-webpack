@@ -1,4 +1,4 @@
-import Vue from 'vue/dist/vue.esm.js'
+import Vue from 'vue'
 import Single from './Single.vue'
 
 const app = new Vue({
