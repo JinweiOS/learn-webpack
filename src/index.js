@@ -1,5 +1,8 @@
-function useWebpack() {
-    console.log('hello webpack')
-}
+import Vue from 'vue/dist/vue.esm.js'
+import Single from './Single.vue'
 
-useWebpack()
+const app = new Vue({
+    render: h => h(Single)
+});
+
+app.$mount('#app')
