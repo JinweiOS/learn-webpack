@@ -1,6 +1,7 @@
 <template>
   <div>
     <div>vue single file component</div>
+    <img :src="require('./assets/qq.jpg')" />
     <div class="title">
       <div class="title-child">{{ test }}</div>
     </div>
@@ -27,10 +28,10 @@ export default {
     };
   },
   mounted() {
-    this.test();
+    this.test1();
   },
   methods: {
-    test() {
+    test1() {
       console.log(!!this.single.name?.first);
     },
   },
