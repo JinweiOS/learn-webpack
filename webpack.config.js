@@ -3,13 +3,14 @@ const { VueLoaderPlugin } = require('vue-loader')
 const WebpackBar = require('webpackbar');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const fileListTxtWebpackPlugin = require("../plugin/index");
 
 module.exports = {
     entry: path.join(__dirname, 'src/index.js'),
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].[hash:5].bundle.js',
+        filename: 'js/[name].[hash:5].bundle.js',
     },
     mode: 'development', // production
     // 配置loader
@@ -45,6 +46,23 @@ module.exports = {
                         ],
                     }
                 }
+            },
+            // {
+            //     test: /\.jsons$/,
+            //     use: {
+            //         loader: path.join(__dirname, '../loader/index.js')
+            //     }
+            // }
+            {
+                test: /png|jpg|gif|svg/,
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        esModule: false,
+                        limit: 1024, // < 1024byte 打包成base64
+                        name: 'images/[name].[hash:5].[ext]'
+                    }
+                }
             }
         ]
     },
@@ -58,8 +76,30 @@ module.exports = {
             template: path.join(__dirname, 'index.html')
         }),
         new MiniCssExtractPlugin({
-            filename: '[name].[hash:5].chunk.css'
+            filename: 'css/[name].[hash:5].chunk.css'
         }),
         new CleanWebpackPlugin(),
-    ]
+        // new fileListTxtWebpackPlugin()
+    ],
+    devServer: {
+        proxy: {
+            '/api': 'http://localhost:3000/api',
+        },
+        compress: true,
+        hot: true,
+        static: {
+            directory: path.join(__dirname, 'public'),
+        },
+        open: true,
+        compress: true,
+        host: '127.0.0.1',
+        port: 8080,
+        allowedHosts: 'all',
+        client: {
+            overlay: {
+                errors: true,
+            },
+            progress: true,
+        },
+    },
 }
