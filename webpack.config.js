@@ -1,12 +1,15 @@
 const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader')
 const WebpackBar = require('webpackbar');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 
 module.exports = {
     entry: path.join(__dirname, 'src/index.js'),
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'index.bundle.js',
+        filename: '[name].[hash:5].bundle.js',
     },
     mode: 'development', // production
     // 配置loader
@@ -19,14 +22,14 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    'vue-style-loader',
+                    MiniCssExtractPlugin.loader,
                     'css-loader',
                 ]
             },
             {
                 test: /\.s[ac]ss$/i,
                 use: [
-                    'vue-style-loader',
+                    MiniCssExtractPlugin.loader,
                     'css-loader',
                     'sass-loader'
                 ]
@@ -40,11 +43,6 @@ module.exports = {
                         presets: [
                             ['@vue/babel-preset-app']
                         ],
-                        // plugins: [
-                        //     ['@babel/plugin-proposal-decorators', {
-                        //         version: "2021-12"
-                        //     }]
-                        // ]
                     }
                 }
             }
@@ -53,6 +51,15 @@ module.exports = {
     // 配置插件
     plugins: [
         new VueLoaderPlugin(),
-        new WebpackBar()
+        new WebpackBar(),
+        new HtmlWebpackPlugin({
+            title: 'Name From HtmlWebpack',
+            filename: path.join(__dirname, 'dist/index.html'),
+            template: path.join(__dirname, 'index.html')
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].[hash:5].chunk.css'
+        }),
+        new CleanWebpackPlugin(),
     ]
 }
