@@ -4,15 +4,20 @@ const WebpackBar = require('webpackbar');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const fileListTxtWebpackPlugin = require("../plugin/index");
+const TerserPlugin = require("terser-webpack-plugin");
+// 前端单步调试
+function isProction() {
+    return process.env.NODE_ENV === 'production';
+}
+
 
 module.exports = {
-    entry: path.join(__dirname, 'src/index.js'),
+    entry: path.join(__dirname, '../src/index.js'),
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, '../dist'),
         filename: 'js/[name].[hash:5].bundle.js',
     },
-    mode: 'development', // production
+    devtool: isProction() ? 'source-map' : 'eval-cheap-module-source-map',
     // 配置loader
     module: {
         rules: [
@@ -72,34 +77,21 @@ module.exports = {
         new WebpackBar(),
         new HtmlWebpackPlugin({
             title: 'Name From HtmlWebpack',
-            filename: path.join(__dirname, 'dist/index.html'),
-            template: path.join(__dirname, 'index.html')
+            filename: path.join(__dirname, '../dist/index.html'),
+            template: path.join(__dirname, '../index.html')
         }),
         new MiniCssExtractPlugin({
             filename: 'css/[name].[hash:5].chunk.css'
         }),
         new CleanWebpackPlugin(),
-        // new fileListTxtWebpackPlugin()
     ],
-    devServer: {
-        proxy: {
-            '/api': 'http://localhost:3000/api',
-        },
-        compress: true,
-        hot: true,
-        static: {
-            directory: path.join(__dirname, 'public'),
-        },
-        open: true,
-        compress: true,
-        host: '127.0.0.1',
-        port: 8080,
-        allowedHosts: 'all',
-        client: {
-            overlay: {
-                errors: true,
-            },
-            progress: true,
-        },
+    optimization: {
+        minimizer: [new TerserPlugin({
+            terserOptions: {
+                compress: {
+                    drop_console: isProction()
+                }
+            }
+        })],
     },
 }

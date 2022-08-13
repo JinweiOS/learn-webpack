@@ -28,11 +28,16 @@ export default {
     };
   },
   mounted() {
-    this.tes();
+    this.test1();
   },
   methods: {
     test1() {
-      console.lo(!!this.single.name?.first);
+      console.log('hahahah')
+      const a = 1;
+      const b = {
+        a: "哈哈哈哈"
+      }
+      console.log('我到底有没有被删除');
     },
   },
 };
