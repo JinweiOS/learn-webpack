@@ -68,6 +68,12 @@ module.exports = {
                         name: 'images/[name].[hash:5].[ext]'
                     }
                 }
+            },
+            {
+                test: /\.pjw$/,
+                use: {
+                    loader: path.join(__dirname, '../loaders/simple.js')
+                }
             }
         ]
     },
