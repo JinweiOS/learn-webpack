@@ -72,7 +72,12 @@ module.exports = {
             {
                 test: /\.pjw$/,
                 use: {
-                    loader: path.join(__dirname, '../loaders/simple.js')
+                    loader: path.join(__dirname, '../loaders/simple.js'),
+                    options: {
+                        keyValue: {
+                            author: 'jinwei.peng'
+                        }
+                    }
                 }
             }
         ]
