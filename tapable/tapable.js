@@ -8,6 +8,7 @@ const hook = new SyncHook(['n1', 'n2']);
 // 注册事件
 hook.tap('flag1', (arg1,arg2,arg3) => {
     console.log('flag1:',arg1,arg2,arg3)
+    return 1;
 })
 
 hook.tap('flag2', (arg1,arg2,arg3) => {
