@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const TerserPlugin = require("terser-webpack-plugin");
-const SelfCleanPlugin = require('../plugin/debug')
+const MyExampleWebpackPlugin = require('../plugin/my-first-plugin')
 // 前端单步调试
 function isProction() {
     return process.env.NODE_ENV === 'production';
@@ -96,9 +96,9 @@ module.exports = {
             filename: 'css/[name].[hash:5].chunk.css'
         }),
         // new CleanWebpackPlugin(),
-        new SelfCleanPlugin({
-            test: 'aaa'
-        }),
+        new MyExampleWebpackPlugin({
+            reportUrl: 'http://localhost: 3000'
+        })
     ],
     optimization: {
         minimizer: [new TerserPlugin({
